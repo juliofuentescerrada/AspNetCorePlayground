@@ -23,11 +23,9 @@
         [Fact]
         public async Task get()
         {
-            var weatherForecast = Given.a_weather_forecast
-                .with_date(DateTime.Today)
-                .with_summary("Cool")
-                .with_temperature(10)
-                .build(_fixture);
+            var weatherForecast = Given.a_weather_forecast.with_date(DateTime.Today).with_summary("Cool").with_temperature(10).build();
+            
+            await _fixture.AddDatabaseItems(weatherForecast);
 
             var response = await _fixture.Get<WeatherForecastController, IEnumerable<WeatherForecast>>(controller => controller.Get(), Identities.Default);
 
@@ -37,11 +35,9 @@
         [Fact]
         public async Task get_by_id()
         {
-            var weatherForecast = Given.a_weather_forecast
-                .with_date(DateTime.Today)
-                .with_summary("Cool")
-                .with_temperature(10)
-                .build(_fixture);
+            var weatherForecast = Given.a_weather_forecast.with_date(DateTime.Today).with_summary("Cool").with_temperature(10).build();
+
+            await _fixture.AddDatabaseItems(weatherForecast);
 
             var response = await _fixture.Get<WeatherForecastController, WeatherForecast>(controller => controller.Get(weatherForecast.Id), Identities.Default);
 
@@ -49,7 +45,7 @@
         }
 
         [Fact]
-        public async Task post()
+        public async Task create()
         {
             var request = new WeatherForecast { Date = DateTime.Today, Summary = "Cool", TemperatureC = 10 };
 
@@ -61,14 +57,12 @@
         }
 
         [Fact]
-        public async Task put()
+        public async Task update()
         {
-            var weatherForecast = Given.a_weather_forecast
-                .with_date(DateTime.Today)
-                .with_summary("Cool")
-                .with_temperature(10)
-                .build(_fixture);
+            var weatherForecast = Given.a_weather_forecast.build();
 
+            await _fixture.AddDatabaseItems(weatherForecast);
+            
             var request = new WeatherForecast { Date = DateTime.Today.AddDays(1), Summary = "Updated", TemperatureC = 99 };
 
             await _fixture.Put<WeatherForecastController>(controller => controller.Put(weatherForecast.Id, request), Identities.Default);
@@ -81,12 +75,10 @@
         [Fact]
         public async Task delete()
         {
-            var weatherForecast = Given.a_weather_forecast
-                .with_date(DateTime.Today)
-                .with_summary("Cool")
-                .with_temperature(10)
-                .build(_fixture);
+            var weatherForecast = Given.a_weather_forecast.build();
 
+            await _fixture.AddDatabaseItems(weatherForecast);
+            
             var id = await _fixture.Post<WeatherForecastController, int>(controller => controller.Delete(weatherForecast.Id), Identities.Default);
 
             var response = await _fixture.Get<WeatherForecastController>(controller => controller.Get(id), Identities.Default);

@@ -1,6 +1,5 @@
 ﻿namespace AspNetCorePlayground.Specs.Given
 {
-    using Configuration;
     using Data.Model;
     using System;
 
@@ -28,19 +27,11 @@
             return this;
         }
 
-        public WeatherForecast build(TestFixture testFixture)
+        public WeatherForecast build() => new()
         {
-            var i = new WeatherForecast
-            {
-                Date = _date,
-                Summary = _summary,
-                TemperatureC = _temperature
-            };
-
-            testFixture.AddDatabaseItems(i).ConfigureAwait(false).GetAwaiter().GetResult();
-
-            return i;
-        }
-
+            Date = _date,
+            Summary = _summary,
+            TemperatureC = _temperature
+        };
     }
 }
