@@ -2,7 +2,7 @@ namespace AspNetCorePlayground.Data.Model
 {
     using System;
 
-    public class WeatherForecast
+    public sealed class WeatherForecast
     {
         public int Id { get; set; }
 

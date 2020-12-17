@@ -38,10 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configuration\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\AspNetCorePlayground\AspNetCorePlayground.csproj" />
   </ItemGroup>
 

@@ -12,7 +12,7 @@
     using System.Threading.Tasks;
     using Xunit;
 
-    public sealed class TestFixture : WebApplicationFactory<TestStartup>
+    public sealed partial class TestFixture : WebApplicationFactory<TestStartup>
     {
         private static readonly Checkpoint Checkpoint = new()
         {

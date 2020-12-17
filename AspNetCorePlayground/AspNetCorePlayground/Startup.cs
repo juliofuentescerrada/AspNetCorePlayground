@@ -8,7 +8,7 @@ namespace AspNetCorePlayground
     using Microsoft.OpenApi.Models;
     using System;
 
-    public class Startup
+    public sealed class Startup
     {
         public IConfiguration Configuration { get; }
 

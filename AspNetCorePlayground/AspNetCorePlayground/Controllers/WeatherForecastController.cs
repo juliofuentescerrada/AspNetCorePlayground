@@ -10,7 +10,7 @@
 
     [ApiController]
     [Route("api/weather-forecasts")]
-    public class WeatherForecastController : ControllerBase
+    public sealed class WeatherForecastController : ControllerBase
     {
         private readonly WeatherForecastDbContext _db;
 

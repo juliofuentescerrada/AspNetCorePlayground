@@ -8,7 +8,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using System;
 
-    public class TestStartup
+    public sealed class TestStartup
     {
         public IConfiguration Configuration { get; }
 
