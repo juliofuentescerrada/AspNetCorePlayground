@@ -21,67 +21,67 @@
         public Task DisposeAsync() => Task.CompletedTask;
 
         [Fact]
-        public async Task get()
+        public async Task get_all_weather_forecasts()
         {
             var weatherForecast = Given.a_weather_forecast.with_date(DateTime.Today).with_summary("Cool").with_temperature(10).build();
             
-            await _fixture.AddDatabaseItems(weatherForecast);
+            await _fixture.AddToDatabase(weatherForecast);
 
-            var response = await _fixture.Get<WeatherForecastController, IEnumerable<WeatherForecast>>(controller => controller.Get(), Identities.Default);
+            var response = await _fixture.Get<WeatherForecastController, IEnumerable<WeatherForecast>>(controller => controller.GetAll());
 
             response.Should().ContainEquivalentOf(weatherForecast);
         }
 
         [Fact]
-        public async Task get_by_id()
+        public async Task get_a_single_forecast_by_id()
         {
             var weatherForecast = Given.a_weather_forecast.with_date(DateTime.Today).with_summary("Cool").with_temperature(10).build();
 
-            await _fixture.AddDatabaseItems(weatherForecast);
+            await _fixture.AddToDatabase(weatherForecast);
 
-            var response = await _fixture.Get<WeatherForecastController, WeatherForecast>(controller => controller.Get(weatherForecast.Id), Identities.Default);
+            var response = await _fixture.Get<WeatherForecastController, WeatherForecast>(controller => controller.GetById(weatherForecast.Id));
 
             response.Should().BeEquivalentTo(weatherForecast);
         }
 
         [Fact]
-        public async Task create()
+        public async Task create_a_new_weather_forecast()
         {
             var request = new WeatherForecast { Date = DateTime.Today, Summary = "Cool", TemperatureC = 10 };
 
-            var id = await _fixture.Post<WeatherForecastController, int>(controller => controller.Post(request), Identities.Default);
+            var id = await _fixture.Post<WeatherForecastController, int>(controller => controller.Create(request));
 
-            var response = await _fixture.Get<WeatherForecastController, WeatherForecast>(controller => controller.Get(id), Identities.Default);
+            var response = await _fixture.Get<WeatherForecastController, WeatherForecast>(controller => controller.GetById(id));
 
             response.Should().BeEquivalentTo(request, options => options.Excluding(e => e.Id));
         }
 
         [Fact]
-        public async Task update()
+        public async Task update_an_existing_weather_forecast()
         {
             var weatherForecast = Given.a_weather_forecast.build();
 
-            await _fixture.AddDatabaseItems(weatherForecast);
+            await _fixture.AddToDatabase(weatherForecast);
             
             var request = new WeatherForecast { Date = DateTime.Today.AddDays(1), Summary = "Updated", TemperatureC = 99 };
 
-            await _fixture.Put<WeatherForecastController>(controller => controller.Put(weatherForecast.Id, request), Identities.Default);
+            await _fixture.Put<WeatherForecastController>(controller => controller.Update(weatherForecast.Id, request));
 
-            var response = await _fixture.Get<WeatherForecastController, WeatherForecast>(controller => controller.Get(weatherForecast.Id), Identities.Default);
+            var response = await _fixture.Get<WeatherForecastController, WeatherForecast>(controller => controller.GetById(weatherForecast.Id));
 
             response.Should().BeEquivalentTo(request, options => options.Excluding(e => e.Id));
         }
 
         [Fact]
-        public async Task delete()
+        public async Task delete_an_existing_weather_forecast()
         {
             var weatherForecast = Given.a_weather_forecast.build();
 
-            await _fixture.AddDatabaseItems(weatherForecast);
+            await _fixture.AddToDatabase(weatherForecast);
             
-            var id = await _fixture.Post<WeatherForecastController, int>(controller => controller.Delete(weatherForecast.Id), Identities.Default);
+            var id = await _fixture.Post<WeatherForecastController, int>(controller => controller.Delete(weatherForecast.Id));
 
-            var response = await _fixture.Get<WeatherForecastController>(controller => controller.Get(id), Identities.Default);
+            var response = await _fixture.Get<WeatherForecastController>(controller => controller.GetById(id));
 
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }

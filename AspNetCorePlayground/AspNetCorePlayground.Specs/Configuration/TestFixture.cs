@@ -12,38 +12,31 @@
     using System.Threading.Tasks;
     using Xunit;
 
-    public sealed partial class TestFixture : WebApplicationFactory<TestStartup>
+    public sealed class TestFixture : WebApplicationFactory<TestStartup>
     {
-        private static readonly Checkpoint Checkpoint = new()
-        {
-            TablesToIgnore = new[] { "__EFMigrationsHistory" }
-        };
+        private static readonly Checkpoint Checkpoint = new() { TablesToIgnore = new[] { "__EFMigrationsHistory" } };
 
-        protected override IHostBuilder CreateHostBuilder() => Host
-            .CreateDefaultBuilder()
-            .ConfigureWebHostDefaults(builder => builder.UseStartup<TestStartup>().UseTestServer());
+        protected override IHostBuilder CreateHostBuilder()
+        {
+            return Host
+                .CreateDefaultBuilder()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .ConfigureWebHostDefaults(builder => builder
+                    .UseStartup<TestStartup>()
+                    .UseTestServer());
+        }
 
         protected override IHost CreateHost(IHostBuilder builder)
         {
-            var host = base.CreateHost(builder.UseContentRoot(Directory.GetCurrentDirectory()));
-            return MigrateDbContext(host);
+            return base.CreateHost(builder).MigrateDbContext();
         }
-
-        public static IHost MigrateDbContext(IHost host)
+        
+        public Task ResetDatabase()
         {
-            using var scope = host.Services.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<WeatherForecastDbContext>();
-            WeatherForecastDbContextInitializer.Migrate(context);
-            return host;
+            return Checkpoint.Reset(Services.GetService<IConfiguration>().GetConnectionString("DefaultConnection"));
         }
 
-        public async Task ResetDatabase()
-        {
-            var connectionString = Services.GetService<IConfiguration>().GetConnectionString("DefaultConnection");
-            await Checkpoint.Reset(connectionString);
-        }
-
-        public async Task AddDatabaseItems<T>(params T[] items) where T : class
+        public async Task AddToDatabase<T>(params T[] items) where T : class
         {
             using var scope = Services.CreateScope();
             await using var db = scope.ServiceProvider.GetRequiredService<WeatherForecastDbContext>();
@@ -51,7 +44,7 @@
             await db.SaveChangesAsync();
         }
     }
-    
+
     [CollectionDefinition(nameof(TestFixture))]
     public sealed class TestFixtureCollection : ICollectionFixture<TestFixture> { }
 }

@@ -3,17 +3,14 @@
     using System.Collections.Generic;
     using System.Security.Claims;
 
-    public static class Identities
+    public sealed class TestIdentity : List<Claim>
     {
-        public static string Default = nameof(Default);
-
-        public static IEnumerable<Claim> Profile(string id)
+        public static readonly TestIdentity Default = new(nameof(Default));
+        
+        public TestIdentity(string id)
         {
-            return new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, id),
-                new Claim(ClaimTypes.Name, id)
-            };
+            Add(new Claim(ClaimTypes.NameIdentifier, id));
+            Add(new Claim(ClaimTypes.Name, id));
         }
     }
 }

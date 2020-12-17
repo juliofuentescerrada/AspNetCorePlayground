@@ -9,15 +9,18 @@ namespace AspNetCorePlayground
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            MigrateDbContext(host).Run();
-        }
-        
-        public static IHostBuilder CreateHostBuilder(string[] args) => Host
-            .CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
+            var host = Host
+                .CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(builder => builder.UseStartup<Startup>())
+                .Build();
 
-        public static IHost MigrateDbContext(IHost host)
+            host.MigrateDbContext().Run();
+        }
+    }
+
+    public static class HostExtensions
+    {
+        public static IHost MigrateDbContext(this IHost host)
         {
             using var scope = host.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<WeatherForecastDbContext>();

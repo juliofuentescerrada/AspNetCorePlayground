@@ -13,42 +13,37 @@
     public sealed class WeatherForecastController : ControllerBase
     {
         private readonly WeatherForecastDbContext _db;
-
-        public WeatherForecastController(WeatherForecastDbContext db)
-        {
-            _db = db ?? throw new ArgumentNullException(nameof(db));
-        }
+        public WeatherForecastController(WeatherForecastDbContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get()
+        public async Task<ActionResult<IEnumerable<WeatherForecast>>> GetAll()
         {
             var result = await _db.WeatherForecasts.ToListAsync();
             return Ok(result);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<WeatherForecast>> Get([FromRoute] int id)
+        public async Task<ActionResult<WeatherForecast>> GetById([FromRoute] int id)
         {
             return await _db.WeatherForecasts.FindAsync(id);
         }
 
         [HttpPost]
-        public async Task<CreatedAtActionResult> Post([FromBody] WeatherForecast model)
+        public async Task<CreatedAtActionResult> Create([FromBody] WeatherForecast model)
         {
             await _db.WeatherForecasts.AddAsync(model);
             await _db.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), model.Id);
+            return CreatedAtAction(nameof(GetById), new { id = model.Id }, model.Id);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put([FromRoute] int id, [FromBody] WeatherForecast model)
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] WeatherForecast model)
         {
             var entity = await _db.WeatherForecasts.FindAsync(id);
             entity.Date = model.Date;
             entity.Summary = model.Summary;
             entity.TemperatureC = model.TemperatureC;
             await _db.SaveChangesAsync();
-
             return Ok();
         }
 
@@ -58,7 +53,6 @@
             var entity = await _db.WeatherForecasts.FindAsync(id);
             _db.Remove(entity);
             await _db.SaveChangesAsync();
-
             return Ok();
         }
     }
