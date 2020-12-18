@@ -20,7 +20,6 @@
         {
             return Host
                 .CreateDefaultBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureWebHostDefaults(builder => builder
                     .UseStartup<TestStartup>()
                     .UseTestServer());
@@ -28,7 +27,7 @@
 
         protected override IHost CreateHost(IHostBuilder builder)
         {
-            return base.CreateHost(builder).MigrateDbContext();
+            return base.CreateHost(builder.UseContentRoot(Directory.GetCurrentDirectory())).MigrateDbContext();
         }
         
         public Task ResetDatabase()
