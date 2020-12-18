@@ -33,7 +33,8 @@
         
         public Task ResetDatabase()
         {
-            return Checkpoint.Reset(Services.GetService<IConfiguration>().GetConnectionString("DefaultConnection"));
+            var connectionString = Services.GetService<IConfiguration>().GetConnectionString("DefaultConnection");
+            return Checkpoint.Reset(connectionString);
         }
 
         public async Task AddToDatabase<T>(params T[] items) where T : class

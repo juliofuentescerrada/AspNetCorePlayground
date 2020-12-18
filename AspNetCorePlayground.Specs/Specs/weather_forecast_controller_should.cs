@@ -16,14 +16,19 @@
     public sealed class weather_forecast_controller_should : IAsyncLifetime
     {
         private readonly TestFixture _fixture;
-        public weather_forecast_controller_should(TestFixture fixture) => _fixture = fixture;
         public Task InitializeAsync() => _fixture.ResetDatabase();
         public Task DisposeAsync() => Task.CompletedTask;
+        
+        public weather_forecast_controller_should(TestFixture fixture) => _fixture = fixture;
 
         [Fact]
         public async Task get_all_weather_forecasts()
         {
-            var weatherForecast = Given.a_weather_forecast.with_date(DateTime.Today).with_summary("Cool").with_temperature(10).build();
+            var weatherForecast = Given.a_weather_forecast
+                .with_date(DateTime.Today)
+                .with_summary("Cool")
+                .with_temperature(10)
+                .build();
             
             await _fixture.AddToDatabase(weatherForecast);
 
@@ -35,7 +40,11 @@
         [Fact]
         public async Task get_a_single_forecast_by_id()
         {
-            var weatherForecast = Given.a_weather_forecast.with_date(DateTime.Today).with_summary("Cool").with_temperature(10).build();
+            var weatherForecast = Given.a_weather_forecast
+                .with_date(DateTime.Today)
+                .with_summary("Cool")
+                .with_temperature(10)
+                .build();
 
             await _fixture.AddToDatabase(weatherForecast);
 
@@ -79,9 +88,9 @@
 
             await _fixture.AddToDatabase(weatherForecast);
             
-            var id = await _fixture.Post<WeatherForecastController, int>(controller => controller.Delete(weatherForecast.Id));
+            await _fixture.Delete<WeatherForecastController>(controller => controller.Delete(weatherForecast.Id));
 
-            var response = await _fixture.Get<WeatherForecastController>(controller => controller.GetById(id));
+            var response = await _fixture.Get<WeatherForecastController>(controller => controller.GetById(weatherForecast.Id));
 
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
