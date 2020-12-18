@@ -11,15 +11,14 @@
     {
         public static IServiceCollection ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddWeatherForecastServices();
-
             services
-                .AddEntityFrameworkSqlServer()
                 .AddDbContext<WeatherForecastDbContext>(builder => builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")))
                 .AddScoped<DbContext>(provider => provider.GetRequiredService<WeatherForecastDbContext>());
-                
             
-            services.AddControllers().AddWeatherForecastPart();
+            services
+                .AddWeatherForecastServices()
+                .AddControllers()
+                .AddWeatherForecastPart();
 
             return services;
         }

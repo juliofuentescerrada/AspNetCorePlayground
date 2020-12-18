@@ -2,19 +2,51 @@ namespace AspNetCorePlayground
 {
     using Data;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Serilog;
+    using System;
+    using System.IO;
 
     public sealed class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            var host = Host
-                .CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(builder => builder.UseStartup<Startup>())
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.Development.json", optional: true)
                 .Build();
+            
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .WriteTo.Console()
+                .Enrich.FromLogContext()
+                .CreateLogger();
 
-            host.MigrateDbContext().Run();
+            try
+            {
+                var host = Host
+                    .CreateDefaultBuilder(args)
+                    .UseSerilog()
+                    .ConfigureWebHostDefaults(builder => builder.UseStartup<Startup>())
+                    .Build();
+
+                host.MigrateDbContext().Run();
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "");
+                return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
+
         }
     }
 

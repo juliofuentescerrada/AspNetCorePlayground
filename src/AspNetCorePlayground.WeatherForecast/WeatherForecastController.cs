@@ -2,6 +2,7 @@
 {
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
     using Read;
     using Read.Model;
     using System;
@@ -15,11 +16,18 @@
     public sealed class WeatherForecastController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public WeatherForecastController(IMediator mediator) => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        private readonly ILogger<WeatherForecastController> _logger;
+
+        public WeatherForecastController(IMediator mediator, ILogger<WeatherForecastController> logger)
+        {
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherForecast>>> GetAll()
         {
+            _logger.LogInformation("jajaja");
             var result = await _mediator.Send(new GetWeatherForecasts());
             return Ok(result);
         }
