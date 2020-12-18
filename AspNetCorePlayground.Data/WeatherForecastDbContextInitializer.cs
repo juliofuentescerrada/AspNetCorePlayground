@@ -1,9 +1,9 @@
 ﻿namespace AspNetCorePlayground.Data
 {
     using Microsoft.EntityFrameworkCore;
-    using Model;
     using System;
     using System.Linq;
+    using WeatherForecast.Write.Model;
 
     public static class WeatherForecastDbContextInitializer
     {

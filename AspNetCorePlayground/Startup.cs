@@ -19,8 +19,9 @@ namespace AspNetCorePlayground
         
         public void ConfigureServices(IServiceCollection services)
         {
-            ApiConfiguration.ConfigureServices(services, Configuration).AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Weather Forecast API V1", Version = "v1" }));
+
+            ApiConfiguration.ConfigureServices(services, Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,7 +1,7 @@
 ﻿namespace AspNetCorePlayground.Data
 {
     using Microsoft.EntityFrameworkCore;
-    using Model;
+    using WeatherForecast.Write.Model;
 
     public sealed class WeatherForecastDbContext : DbContext
     {

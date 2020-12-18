@@ -1,7 +1,7 @@
 ﻿namespace AspNetCorePlayground.Specs.Given
 {
-    using Data.Model;
     using System;
+    using WeatherForecast.Write.Model;
 
     public class WeatherForecastBuilder
     {

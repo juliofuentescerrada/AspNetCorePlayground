@@ -1,8 +1,8 @@
-namespace AspNetCorePlayground.Data.Model
+﻿namespace AspNetCorePlayground.WeatherForecast.Read.Model
 {
     using System;
 
-    public sealed class WeatherForecast
+    public class WeatherForecastDto
     {
         public int Id { get; set; }
 
@@ -13,5 +13,6 @@ namespace AspNetCorePlayground.Data.Model
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 
         public string Summary { get; set; }
+
     }
 }
