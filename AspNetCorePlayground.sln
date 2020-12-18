@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCorePlayground.Specs"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCorePlayground.Data", "src\AspNetCorePlayground.Data\AspNetCorePlayground.Data.csproj", "{11326E86-8C28-4335-800A-A95C221A86E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCorePlayground.WeatherForecast", "src\AspNetCorePlayground.WeatherForecast\AspNetCorePlayground.WeatherForecast.csproj", "{59F224C9-8D9A-4482-AB4E-BFCEE2B3D250}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCorePlayground.WeatherForecast", "src\AspNetCorePlayground.WeatherForecast\AspNetCorePlayground.WeatherForecast.csproj", "{59F224C9-8D9A-4482-AB4E-BFCEE2B3D250}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{68C52C8F-3121-4CA0-A74E-985F323AEAA7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{CA01083B-0DFF-4DCA-803C-88F30894870A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +40,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{29C4346C-1105-4C0A-9970-18AAD6D1032F} = {68C52C8F-3121-4CA0-A74E-985F323AEAA7}
+		{31D02C40-447F-42D3-B54E-C07C0F313157} = {CA01083B-0DFF-4DCA-803C-88F30894870A}
+		{11326E86-8C28-4335-800A-A95C221A86E1} = {68C52C8F-3121-4CA0-A74E-985F323AEAA7}
+		{59F224C9-8D9A-4482-AB4E-BFCEE2B3D250} = {68C52C8F-3121-4CA0-A74E-985F323AEAA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFABE934-FB9B-47F3-B146-57B80A9DEF04}

@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNetCorePlayground\AspNetCorePlayground.csproj" />
+    <ProjectReference Include="..\..\src\AspNetCorePlayground\AspNetCorePlayground.csproj" />
   </ItemGroup>
 
 </Project>
